@@ -1,8 +1,9 @@
-name: Build CPP to EXE
+
+name: Compile C++ to EXE
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -10,14 +11,21 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      - name: Compile CPP
-        run: g++ main.cpp -o menu_makanan.exe
+    - name: Setup MinGW
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        install: mingw-w64-x86_64-gcc
 
-      - name: Upload EXE
-        uses: actions/upload-artifact@v4
-        with:
-          name: menu-makanan-exe
-          path: menu_makanan.exe
+    - name: Compile C++
+      shell: msys2 {0}
+      run: g++ main.cpp -o main.exe -static -static-libgcc -static-libstdc++
+
+    - name: Upload EXE
+      uses: actions/upload-artifact@v4
+      with:
+        name: hasil-exe
+        path: main.exe
