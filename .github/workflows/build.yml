@@ -1,5 +1,4 @@
-
-name: Build C++ to EXE
+name: Build CPP to EXE
 
 on:
   push:
@@ -11,15 +10,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Compile C++ to EXE
-        run: |
-          g++ *.cpp -o program.exe -static -static-libgcc -static-libstdc++
+      - name: Compile CPP
+        run: g++ menu_makanan.cpp -o menu_makanan.exe
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: program-exe
-          path: program.exe
+          name: menu-makanan-exe
+          path: menu_makanan.exe
